@@ -9,7 +9,7 @@ host = '192.168.1.239'
 # host = '192.168.0.123' #ip of raspberry pi
 port = 10000
 s.bind((host, port))
-
+# hello
 c = None
 addr = None
 
