@@ -4,6 +4,8 @@ from flask_socketio import SocketIO, send, emit
 import socket
 import time
 
+#Tess
+
 s = socket.socket()
 host = '192.168.1.239'
 # host = '192.168.0.123' #ip of raspberry pi
