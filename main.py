@@ -5,11 +5,12 @@ import socket
 import time
 
 s = socket.socket()
-host = '192.168.0.121'
+#hosta = '192.168.0.121'
 #host = '0.0.0.0'
+hosta = '192.168.1.137'
 # host = '192.168.0.123' #ip of raspberry pi Erik
 port = 10000
-s.bind((host, port))
+s.bind((hosta, port))
 # hello
 c = None
 addr = None
@@ -39,5 +40,5 @@ def recive_derection(data):
 
 if __name__ == '__main__':
     print('run app')
-    app.run()
+    app.run(host='0.0.0.0')
 

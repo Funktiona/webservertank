@@ -21,10 +21,10 @@ function checkKey(e) {
         else if (e.keyCode == '39') {
                 socket.emit('direction', 'right');
         }
-	else if (e.keyCode == '97'){
+	else if (e.keyCode == '65'){
 		socket.emit('direction', 'tower_left');
 	}
-	else if (e.keyCode ==  '100'){
+	else if (e.keyCode ==  '68'){
 		socket.emit('direction', 'tower_right');
 	}
 }
