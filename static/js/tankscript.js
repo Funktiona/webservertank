@@ -3,31 +3,58 @@ var socket = io.connect('http://' + document.domain + ':' + location.port);
             socket.emit('my event', {data: 'I\'m connected!'});
             });
 
-document.onkeydown = checkKey;
 
-function checkKey(e) {
 
-        e = e || window.event;
+var keys = {37: false, 38: false, 39: false, 40: false};
+var prv_keys = {};
+var valid_keys = {37: false, 38: false, 39: false, 40: false};
+document.addEventListener('keydown',activated_keys);
+document.addEventListener('keyup',activated_keys);
 
-	if (e.keyCode == '38') {
-		socket.emit('direction', 'up');
-        }
-        else if (e.keyCode == '40') {
-		socket.emit('direction', 'down');
-        }
-        else if (e.keyCode == '37') {
-		socket.emit('direction', 'left');
-	}
-        else if (e.keyCode == '39') {
-                socket.emit('direction', 'right');
-        }
-	else if (e.keyCode == '65'){
-		socket.emit('direction', 'tower_left');
-	}
-	else if (e.keyCode ==  '68'){
-		socket.emit('direction', 'tower_right');
-	}
+function copy_obj(original){
+	/*Makes a new object from the old one*/
+    let copy = Object.assign({}, original);
+    return copy;
 }
+function activated_keys(e)
+{
+          /*Saves the keyboard inputs in a object.
+            Stores the value in keys and makes a
+            copy in prv_keys to check for a change.
+            If a change has occurred i.e a key has been
+            released or pressed.
+            The change will be sent to the server.
+            TODO see if there is a problem when you send a lot of keycodes.
+            */
+
+     for(var key in valid_keys)
+     {
+        if (e.keyCode == key)
+        {
+           if (e.type == 'keyup')
+           {
+               keys[e.keyCode] = false;
+           }
+           if (e.type == 'keydown')
+           {
+               keys[e.keyCode] = true;
+           }
+           /* Stringify the objects making it easier to compare them.*/
+           let key_json= JSON.stringify(keys);
+           let copy_json = JSON.stringify(prv_keys);
+
+           if (key_json !== copy_json)
+           {
+               console.log(key_json)
+               //Only sends keys when something have changed.
+               socket.emit('input', key_json);
+               prv_keys = copy_obj(keys);
+           }
+        }
+     }
+}
+
+document.onkeydown = checkKey;
 
 function checkKey(e) {
 
@@ -68,7 +95,7 @@ function checkKey(e) {
         else if (e.keyCode == '68') {
                 socket.emit('direction', 'right');
         }
-	
+
 }
 
 
