@@ -3,20 +3,20 @@
         <head>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>		  
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    		<script src="{{ url_for('static', filename='js/script.js') }}"></script>`
+    		<script src="{{ url_for('static', filename='js/tankscript.js') }}"></script>`
+		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
                 <title>Page Title</title>
         </head>
         <body>
 
                 <h1>This is a Heading</h1>
                 <p>This is a paragraph.</p>
-		<canvas id="myCanvas" width="640" height="480" style="border:1px solid #000000;">
-		
-		</canvas> 
-		
-		<img src="http://192.168.1.236:8080/stream">
-		<img src="http://192.168.0.122:8080/stream/video.mjpeg">
-		<a href="/videos{{ path }}.m3u8">Click me</a>
+		<div id="container">
+			<img class='img' src="{{ stream_addr }}">
+			<canvas id="myCanvas" width="640" height="480" style="border:1px solid #000000;"></canvas> 
+		</div>
+		<!---<img src="http://192.168.0.122:8080/stream/video.mjpeg"> -->
+	
 
 		<script>draw_hair()</script>
         </body>

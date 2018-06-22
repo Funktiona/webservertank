@@ -81,25 +81,46 @@ function draw_hair(){
 
 	ctx.clearRect(0, 0, 640, 480);
 	ctx.beginPath();
-	
+
+	//var img = new Image();
+	//img.src = "http://192.168.1.247:8080/stream/video.mjpeg"
+	//img.src = "http://192.168.1.247:8080/stream/snapshot.jpeg?delay_s=0"
+	//img.onload = function() {
+	//ctx.drawImage(img, 0, 0);
+	//};
+	//var theDate = new Date();
+	ctx.fillStyle = 'green';
+	ctx.rect(aim_pos[0]-40, aim_pos[1]-40, 80, 80);
 	//Left
-	ctx.rect(aim_pos[0]-50, aim_pos[1]-7, 40, 14);
+	//ctx.fillRect(aim_pos[0]-50, aim_pos[1]-7, 40, 14);
 	//Right
-	ctx.rect(aim_pos[0]+10, aim_pos[1]-7, 40, 14);
+	//ctx.fillRect(aim_pos[0]+10, aim_pos[1]-7, 40, 14);
 	//Top 
-	ctx.rect(aim_pos[0]-7, aim_pos[1]-50, 14, 40);
+	//ctx.fillRect(aim_pos[0]-7, aim_pos[1]-50, 14, 40);
 	//Bottom
-	ctx.rect(aim_pos[0]-7, aim_pos[1]+10, 14, 40);
+	//ctx.fillRect(aim_pos[0]-7, aim_pos[1]+10, 14, 40);
 	
 	//Aim angle
 	ctx.rect(50, 40, 540, 50);
 	
-	ctx.rect(30 + (aim_angle/180)*540, 40, 40, 50);
+	ctx.fillRect(30 + (aim_angle/180)*540, 40, 40, 50);
+
 	
+	//img.src = "http://192.168.1.247:8080/stream/video.mjpeg"
+	//img.src = "http://192.168.1.247:8080/stream/snapshot.jpeg?delay_s=0"
 
 	//center
 	ctx.rect(aim_pos[0],aim_pos[1],1,1);
 	ctx.stroke(); 
+
+}
+
+window.setInterval("refreshCanvas()", 30);
+function refreshCanvas(){
+	draw_hair();
+	console.log('render');
+ 	//ctx.drawImage(img, 0, 0);
+};
 
 function mainLoop() {
     //update();
@@ -109,6 +130,7 @@ function mainLoop() {
     requestAnimationFrame(mainLoop);
 }
  
+refreshCanvas()
 // Start things off
-requestAnimationFrame(mainLoop);
+//requestAnimationFrame(mainLoop);
 
