@@ -18,15 +18,16 @@ def connect_tanks(s):
         temp_c, temp_addr = s.accept()
         data = temp_c.recv(1000)
         data = data.decode()
-
+        print(temp_c)
         tanks.append({
             'id': data,
-            'adress': temp_addr,
+            'adress': temp_addr[0],
             'connection': temp_c,
             'timer': int(time.time())
         })
-
-        if len(tanks) == 2:
+        #Maybe this can be improved with somekind of timeout on the recv
+        # so when no more connections is availabe it returns the list
+        if len(tanks) == 1:
             return tanks
 
 def shoot(tank=None, aim_pos=None):
