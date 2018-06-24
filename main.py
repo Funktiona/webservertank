@@ -12,14 +12,15 @@ s.bind((server_ip, port))
 app = Flask(__name__, static_url_path='/static')
 socketio = SocketIO(app)
 
-s.listen(5)
+# s.listen(5)
 
-tanks = funktions.connect_tanks(s)
-class current_tank():
+# test.tanks = funktions.connect_tanks(s)
+class id_save():
     def __init__(self):
         self.id = None
 
-test = current_tank()
+curr_tank = id_save()
+tanks = funktions.connect_tanks(s)
 
 @app.route('/')
 def index():
@@ -27,26 +28,25 @@ def index():
 
 
 # Make page for each tank
-@app.route("/tank/<int:tank>", methods=['GET', 'POST'])
+@app.route("/tank/<int:tank>")
 def tank_page(tank):
-    test.id = tank
-    print(request.method)
 
-    if request.method == 'GET':
-        stream_addr = 'http://' + str(tanks[tank]['adress']) + ':8080/stream/video.mjpeg'
-
+    if tanks[tank]:
+        curr_tank.id = tank
+        print(tanks[curr_tank.id])
+        stream_addr = 'http://' + str(tanks[curr_tank.id]['adress']) + ':8080/stream/video.mjpeg'
         return render_template('tank.html', stream_addr=stream_addr, tank=tank)
-
     else:
-        stream_addr = 'http://' + str(tanks[tank]['adress']) + ':8080/stream/video.mjpeg'
-        return render_template('tank.html', stream_addr=stream_addr, tank=tank)
+        return render_template('index.html')
+
+
 
 
 @socketio.on('input')
 def recive_derection(data):
     print(data)
-    print(tanks[test.id]['connection'])
-    tanks[test.id]['connection'].send(data.encode())
+    print(tanks[curr_tank.id]['connection'])
+    tanks[curr_tank.id]['connection'].send(data.encode())
 
 
 @socketio.on('shoot')

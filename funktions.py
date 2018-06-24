@@ -2,7 +2,6 @@ import time
 import urllib
 import cv2
 
-
 def connect_tanks(s):
     """
     Waits for tanks to connect and add them to a list.
@@ -13,22 +12,31 @@ def connect_tanks(s):
 
     s.listen(5)
     tanks = []
-
-    while 1:
+    time_out = int(time.time())
+    # this should run in a thread, so it's always running and returning the tanks list
+    while True:
         temp_c, temp_addr = s.accept()
+        print(temp_c, temp_addr)
         data = temp_c.recv(1000)
-        data = data.decode()
+        #data = data.decode()
         print(temp_c)
         tanks.append({
-            'id': data,
+            'id': None,
             'adress': temp_addr[0],
             'connection': temp_c,
             'timer': int(time.time())
         })
-        #Maybe this can be improved with somekind of timeout on the recv
-        # so when no more connections is availabe it returns the list
-        if len(tanks) == 1:
+        if len(tanks) == 2:
+            tanks = give_id(tanks)
             return tanks
+
+
+def give_id(tanks):
+    for counter,tank in enumerate(tanks):
+        print(counter)
+        tank['id'] = counter
+    return tanks
+
 
 def shoot(tank=None, aim_pos=None):
     """
