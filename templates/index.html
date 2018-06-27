@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
         <head>
-                <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax$
-                <script src="{{ url_for('static', filename='js/script.js') }}">$
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>		  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    		<script src="{{ url_for('static', filename='js/script.js') }}"></script>`
                 <title>Page Title</title>
         </head>
         <body>
 
                 <h1>This is a Heading</h1>
                 <p>This is a paragraph.</p>
-
+	            {% for client in active_clients%}
+                <li><a href="{{url_for('tank_page', tank=client['id'])}}">{{ client['id'] }}</a></li>
+                {% endfor %}
         </body>
 </html>
