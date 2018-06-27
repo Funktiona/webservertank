@@ -5,9 +5,9 @@ var socket = io.connect('http://' + document.domain + ':' + location.port);
 
 
 
-var keys = {37: false, 38: false, 39: false, 40: false};
+var keys = {32:false, 37: false, 39: false, 65:false, 68: false, 83: false, 87: false};
 var prv_keys = {};
-var valid_keys = {37: false, 38: false, 39: false, 40: false};
+var valid_keys = {32:false, 37: false, 39: false, 65: false, 68: false, 83: false, 87: false};
 document.addEventListener('keydown',activated_keys);
 document.addEventListener('keyup',activated_keys);
 
@@ -18,13 +18,13 @@ function copy_obj(original){
 }
 function activated_keys(e)
 {
-          /*Saves the keyboard inputs in a object.
-            Stores the value in keys and makes a
-            copy in prv_keys to check for a change.
-            If a change has occurred i.e a key has been
-            released or pressed.
-            The change will be sent to the server.
-            */
+  /*Saves the keyboard inputs in a object.
+    Stores the value in keys and makes a
+    copy in prv_keys to check for a change.
+    If a change has occurred i.e a key has been
+    released or pressed.
+    The change will be sent to the server.
+    */
 
      for(var key in valid_keys)
      {
@@ -39,14 +39,13 @@ function activated_keys(e)
                keys[e.keyCode] = true;
            }
            /* Stringify the objects making it easier to compare them.*/
-           let key_json= JSON.stringify(keys);
+           let key_json = JSON.stringify(keys);
            let copy_json = JSON.stringify(prv_keys);
 
            if (key_json !== copy_json)
            {
-               console.log(key_json)
                //Only sends keys when something have changed.
-               socket.emit('input', key_json);
+               socket.emit('input', key_json + '\n', aim_pos,document.URL);
                prv_keys = copy_obj(keys);
            }
         }
@@ -64,7 +63,6 @@ function checkKey(e) {
 		if(aim_pos[1] > 150) aim_pos[1] -= 10;
 		socket.emit('direction', 'up');
 		socket.emit('aim', aim_pos[1]);
-
 	}
 	else if (e.keyCode == '40') {
 		//socket.emit('direction', 'down');
@@ -74,7 +72,7 @@ function checkKey(e) {
 	else if(e.keyCode == '32'){
 		console.log('shoot');
 		console.log(aim_pos);
-		socket.emit('shoot', aim_pos);
+		socket.emit('shoot', aim_pos, document.URL);
 	}
 	else if (e.keyCode == '37'){
 		socket.emit('direction', 'tower_left');
