@@ -6,7 +6,7 @@ import json
 from funktions import tank_connections
 
 s = socket.socket()
-server_ip = '192.168.0.103' # ip of the computer
+server_ip = '192.168.1.64' # ip of the computer
 port = 10000
 
 s.bind((server_ip, port))
