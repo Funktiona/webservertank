@@ -36,7 +36,7 @@ class tank_connections():
             })
         c.close() # is this actually needed?
 
-    def fire(self, dict, aim_pos, id):
+    def fire(self, aim_pos, id):
         """
         Changes the value of key '32'(space) in input dictionary if the tank has "reloaded".
         :param dict: the input dictionary with keys for all the keypresses
@@ -45,14 +45,12 @@ class tank_connections():
         :return:
         """
 
-        if dict['32']:
-            if (int(time.time()) - self.tanks[id]['timer']) > 1:
-                self.tanks[id]['timer'] = self.save_snapshot(id, aim_pos)
-                return True
-            else:
-                return False
-        else:
-            return False
+	if int(time.time()) - self.tanks[id]['timer'] > 1:
+		self.tanks[id]['timer'] = self.save_snapshot(id, aim_pos)
+		return True
+	else:
+		return False
+
 
     def give_id(self):
         for counter, tank in enumerate(self.tanks):

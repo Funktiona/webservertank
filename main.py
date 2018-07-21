@@ -6,7 +6,7 @@ import json
 from funktions import tank_connections
 
 s = socket.socket()
-server_ip = '192.168.1.64' # ip of the computer
+server_ip = '192.168.12.1' # ip of the computer
 port = 10000
 
 s.bind((server_ip, port))
@@ -30,11 +30,26 @@ def tank_page(tank):
     except:
         print('no tank on this adress', tank)
 
+@socketio.on('mouse')
+def receive_mouse(x, url):
+	
+	id = int(url[-1:]) # the duplicate bug is back now.
+	print (id)
+	print(x)
+	x = str(x) + '\n'
+	print(x)
+	clients.tanks[id]['connection'].sendall(x.encode())
+
+
+
 @socketio.on('input')
 def receive_input(direction, aim_pos, url):
     id = int(url[-1:]) # the duplicate bug is back now.
     dir_loaded = json.loads(direction)
-    dir_loaded['32'] = clients.fire(dir_loaded, aim_pos, id)
+    print dir_loaded
+    if dir_loaded['32']:
+    	dir_loaded['32'] = clients.fire(aim_pos, id)
+
     inputs = json.dumps(dir_loaded)
     inputs += '\n' # Helps the tank split the multiple inputs if they get sent at the same time(delay)
     clients.tanks[id]['connection'].sendall(inputs.encode())

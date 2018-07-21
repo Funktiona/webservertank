@@ -5,17 +5,42 @@ var socket = io.connect('http://' + document.domain + ':' + location.port);
 
 
 
-var keys = {32:false, 37: false, 39: false, 65:false, 68: false, 83: false, 87: false};
+var keys = {32: false, 65:false, 68: false, 83: false, 87: false};
 var prv_keys = {};
-var valid_keys = {32:false, 37: false, 39: false, 65: false, 68: false, 83: false, 87: false};
+var valid_keys = {32: false, 65: false, 68: false, 83: false, 87: false};
+
 document.addEventListener('keydown',activated_keys);
-document.addEventListener('keyup',activated_keys);
+document.addEventListener('keyup', activated_keys);
+document.addEventListener("mousemove", mouseMove, false);
 
 function copy_obj(original){
 	/*Makes a new object from the old one*/
     let copy = Object.assign({}, original);
     return copy;
 }
+
+function mouseMove(e) {
+	var canvas=document.getElementById("myCanvas");
+ 	var relativeX = e.clientX;
+	
+
+	let center = relativeX - 465;
+	console.log(center);
+	if (center > 0){
+
+		aim_angle = Math.abs(center)/5 + 90;
+	}
+	if (center < 0){
+	
+		aim_angle = 90 -Math.abs(center)/5;
+		
+	}
+	console.log(aim_angle);
+	
+	
+	socket.emit('mouse', center, document.URL);
+}
+
 function activated_keys(e)
 {
   /*Saves the keyboard inputs in a object.
@@ -39,6 +64,7 @@ function activated_keys(e)
                keys[e.keyCode] = true;
            }
            /* Stringify the objects making it easier to compare them.*/
+
            let key_json = JSON.stringify(keys);
            let copy_json = JSON.stringify(prv_keys);
 
